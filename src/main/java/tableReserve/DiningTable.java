@@ -11,9 +11,9 @@ public class DiningTable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    private Integer personCount;
+    private Integer personCount =0;
 
-    private String name;
+    private String name = "";
 
     private boolean reserved = false;
 
