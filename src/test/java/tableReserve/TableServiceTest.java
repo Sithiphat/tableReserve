@@ -9,8 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +26,7 @@ class TableServiceTest {
     }
 
     @Test
-    void initTable() {
+    void canInitTable() {
         // when
         underTest.initTable(3);
         //then
