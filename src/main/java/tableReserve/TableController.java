@@ -26,6 +26,12 @@ public class TableController {
         return tableService.reserveTable(reservation);
 
     }
+    @PutMapping("cancellation")
+    public ResponseEntity<String> cancelOneTable(@RequestBody DiningTable diningTable){
+        return tableService.cancelReservationOneTable(diningTable);
+
+    }
+
 
 
 }

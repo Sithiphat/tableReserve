@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TableService {
@@ -51,4 +52,15 @@ public class TableService {
 
         return ResponseEntity.ok(message.toString());
     }
+
+    public ResponseEntity<String> cancelReservationOneTable(DiningTable diningTable){
+        Optional<DiningTable> reservedTable = tableRepository.findById(diningTable.getId());
+        if(reservedTable.isEmpty()){
+            return ResponseEntity.status(400).body("can not find table");
+        }
+        reservedTable.get().setReserved(false);
+        tableRepository.save(reservedTable.get());
+        return ResponseEntity.ok("cancel table number "+diningTable.getId()+" reservation");
+    }
+
 }
