@@ -42,14 +42,21 @@ public class TableService {
         }
         StringBuilder message= new StringBuilder("Table number: ");
 
+        //set name, reserved and person count for all table
         for (DiningTable table: diningTableList){
             table.setReserved(true);
             table.setName(reservation.getName());
+            table.setPersonCount(4);
             message.append(table.getId()).append(", ");
-            tableRepository.save(table);
+
 
         }
 
+        // set last table people count
+        diningTableList.get(diningTableList.size()-1)
+                .setPersonCount(reservation.getPeopleCount()%4);
+
+        tableRepository.saveAll(diningTableList);
         return ResponseEntity.ok(message.toString());
     }
 
@@ -59,6 +66,8 @@ public class TableService {
             return ResponseEntity.status(400).body("can not find table");
         }
         reservedTable.get().setReserved(false);
+        reservedTable.get().setPersonCount(0);
+        reservedTable.get().setName("");
         tableRepository.save(reservedTable.get());
         return ResponseEntity.ok("cancel table number "+diningTable.getId()+" reservation");
     }
