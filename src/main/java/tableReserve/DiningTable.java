@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class diningTable {
+public class DiningTable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -29,7 +29,7 @@ public class diningTable {
         return personCount;
     }
 
-    public diningTable() {
+    public DiningTable() {
 
     }
 
