@@ -1,6 +1,7 @@
 package tableReserve;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,4 +20,12 @@ public class TableController {
         tableService.initTable(tableCount);
 
     }
+
+    @PutMapping("reservation")
+    public ResponseEntity<String> reserveTable(@RequestBody Reservation reservation){
+        return tableService.reserveTable(reservation);
+
+    }
+
+
 }
