@@ -1,6 +1,10 @@
 package tableReserve;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -14,17 +18,37 @@ public class TableService {
 
 
     public void initTable(int tableCount){
-        List<diningTable> diningTableList = tableRepository.findAll();
+        List<DiningTable> diningTableList = tableRepository.findAll();
         if (diningTableList.size()!=0){
             throw new IllegalStateException("already init table");
         }
         for (int count=0;count<tableCount;count++){
-            diningTable diningTable = new diningTable();
+            DiningTable diningTable = new DiningTable();
             diningTableList.add(diningTable);
 
         }
 
 
         tableRepository.saveAll(diningTableList);
+    }
+
+    public ResponseEntity<String> reserveTable(Reservation reservation){
+        int neededTable = (int) Math.ceil((double) reservation.getPeopleCount()/4);
+        Pageable topFreeTable =  PageRequest.of(0,neededTable);
+        List<DiningTable> diningTableList= tableRepository.findByReservedFalseOrderById(topFreeTable);
+        if (neededTable> diningTableList.size() ){
+            return ResponseEntity.status(400).body("not enough available table");
+        }
+        StringBuilder message= new StringBuilder("Table number: ");
+
+        for (DiningTable table: diningTableList){
+            table.setReserved(true);
+            table.setName(reservation.getName());
+            message.append(table.getId()).append(", ");
+            tableRepository.save(table);
+
+        }
+
+        return ResponseEntity.ok(message.toString());
     }
 }
